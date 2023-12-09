@@ -48,17 +48,9 @@ public class ComparisonController {
     @RequestMapping(value = "/compare", method = RequestMethod.GET)
     public ResponseEntity<ComparisonList> selectCarsForComparison(
             @RequestBody CompareRequest idList
-    ) {
-        try {
+    ) throws JsonProcessingException {
             ComparisonList comparisonResponses = comparisonLogic.compare(idList);
             LOGGER.info("Performed comparison for car IDs: {}", idList);
             return new ResponseEntity<>(comparisonResponses, HttpStatus.OK);
-        } catch (JsonProcessingException e) {
-            LOGGER.error("Error processing JSON for comparison", e);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            LOGGER.error("Error performing comparison for car IDs: {}", idList, e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 }
