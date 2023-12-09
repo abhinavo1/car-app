@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler({Exception.class,InterruptedException.class})
     @ResponseBody
     public ResponseEntity<String> handleException(Exception ex) {
         LOGGER.error("Unexpected error occurred: {}", ex.getMessage());

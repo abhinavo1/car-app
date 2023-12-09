@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +29,9 @@ public class ComparisonLogicImpl implements ComparisonLogic {
     private final FeatureComparator featureComparator;
     private final SpecificationsComparator specificationsComparator;
     private final RequestValidator requestValidator;
+
+    private final ExecutorService executorService = Executors.newFixedThreadPool(5); // Change the pool size as needed
+
 
     @Autowired
     public ComparisonLogicImpl(CarRepository carRepository, FeatureComparator featureComparator,
@@ -41,18 +47,30 @@ public class ComparisonLogicImpl implements ComparisonLogic {
         requestValidator.validateRequest(compareRequest);
         try {
             Car firstCar = getCarById(compareRequest.getViewingCarId());
+            Feature firstCarFeatures = firstCar.getFeatures();
+            Specifications firstCarSpecifications = firstCar.getSpecifications();
+
             List<Car> listOfCars = getListOfCars(compareRequest.getIdList());
 
             List<Feature> features = listOfCars.stream().map(Car::getFeatures).collect(Collectors.toList());
             List<Specifications> specifications = listOfCars.stream().map(Car::getSpecifications).collect(Collectors.toList());
 
             List<ComparisonResponse> comparisonResponses = new ArrayList<>();
-            comparisonResponses.add(featureComparator.compareFeatures(firstCar.getFeatures(),features));
-            comparisonResponses.add(specificationsComparator.compareSpecifications(firstCar.getSpecifications(), specifications));
+
+
+            CompletableFuture<ComparisonResponse> featureComparisonFuture = CompletableFuture.supplyAsync(() ->
+                    featureComparator.compareFeatures(firstCarFeatures, features),executorService
+            );
+            CompletableFuture<ComparisonResponse> specificationsComparisonFuture = CompletableFuture.supplyAsync(() ->
+                    specificationsComparator.compareSpecifications(firstCarSpecifications, specifications),executorService
+            );
+
+            comparisonResponses.add(featureComparisonFuture.get());
+            comparisonResponses.add(specificationsComparisonFuture.get());
             ComparisonList comparisonList = new ComparisonList();
             comparisonList.setComparisonResponses(comparisonResponses);
             return comparisonList;
-        } catch (JsonProcessingException | ValidationException e) {
+        } catch (ValidationException e) {
             LOGGER.error("Error during comparison: {}", e.getMessage());
             throw new ValidationException(e.getMessage());
         } catch (Exception exception) {

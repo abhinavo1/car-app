@@ -8,6 +8,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 public class CarApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
+		System.setProperty("spring.profiles.active","dev");
 		SpringApplication.run(CarApplication.class, args);
 	}
 

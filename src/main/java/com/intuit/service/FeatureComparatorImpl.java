@@ -19,7 +19,7 @@ import static com.intuit.service.ComparatorUtils.isCommonType;
 public class FeatureComparatorImpl implements FeatureComparator {
 
     @Override
-    public ComparisonResponse compareFeatures(Feature features, List<Feature> features1) throws JsonProcessingException {
+    public ComparisonResponse compareFeatures(Feature features, List<Feature> features1) {
         ComparisonResponse comparisonResponse = new ComparisonResponse();
         comparisonResponse.setGroupName(Constants.ENGINE);
         List<Engine> engines = features1.stream()

@@ -49,8 +49,8 @@ public class ComparisonController {
     public ResponseEntity<ComparisonList> selectCarsForComparison(
             @RequestBody CompareRequest idList
     ) throws JsonProcessingException {
-            ComparisonList comparisonResponses = comparisonLogic.compare(idList);
-            LOGGER.info("Performed comparison for car IDs: {}", idList);
-            return new ResponseEntity<>(comparisonResponses, HttpStatus.OK);
+        ComparisonList comparisonResponses = comparisonLogic.compare(idList);
+        LOGGER.info("Performed comparison for car IDs: {}", idList);
+        return new ResponseEntity<>(comparisonResponses, HttpStatus.OK);
     }
 }
