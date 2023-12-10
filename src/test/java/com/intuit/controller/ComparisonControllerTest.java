@@ -2,11 +2,13 @@ package com.intuit.controller;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.intuit.exception.ValidationException;
 import com.intuit.request.CompareRequest;
 import com.intuit.response.CarResponse;
 import com.intuit.response.ComparisonList;
 import com.intuit.service.ComparisonLogic;
 import com.intuit.service.CarService;
+import com.intuit.service.RedisService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -33,6 +35,9 @@ public class ComparisonControllerTest {
 
     @Mock
     private ComparisonLogic comparisonLogic;
+
+    @Mock
+    private RedisService redisService;
 
     @InjectMocks
     private ComparisonController comparisonController;
@@ -77,17 +82,10 @@ public class ComparisonControllerTest {
 
     }
 
-    @Test
+    @Test(expected = ValidationException.class)
     public void testSelectCarsForComparisonWhenCorrectRequestIsNotSend() throws JsonProcessingException {
-        when(comparisonLogic.compare(any(CompareRequest.class))).thenThrow(JsonProcessingException.class);
-
-        ResponseEntity<ComparisonList> response = comparisonController.selectCarsForComparison(new CompareRequest());
-
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertNull(response.getBody());
-
-        Mockito.verify(comparisonLogic, Mockito.times(1)).compare(Mockito.any());
-        Mockito.verifyNoMoreInteractions(comparisonLogic);
+        when(comparisonLogic.compare(any(CompareRequest.class))).thenThrow(ValidationException.class);
+        comparisonController.selectCarsForComparison(new CompareRequest());
     }
 
 }
