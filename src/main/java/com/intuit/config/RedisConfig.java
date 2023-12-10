@@ -2,6 +2,7 @@ package com.intuit.config;
 
 
 import com.intuit.models.Car;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisClusterConfiguration;
@@ -9,14 +10,15 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 public class RedisConfig {
 
+    @Value("#{'${redis.nodes}'.split(',')}")
+    private List<String> nodes;
     public RedisConnectionFactory redisConnectionFactory() {
-        RedisClusterConfiguration clusterConfiguration = new RedisClusterConfiguration(
-                Arrays.asList("localhost:7000", "localhost:7001", "localhost:7002"));
+        RedisClusterConfiguration clusterConfiguration = new RedisClusterConfiguration(nodes);
         JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(clusterConfiguration);
         jedisConnectionFactory.afterPropertiesSet();
         return jedisConnectionFactory;

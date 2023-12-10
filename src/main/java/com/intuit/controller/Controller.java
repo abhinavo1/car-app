@@ -16,14 +16,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1")
-public class ComparisonController {
+public class Controller {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ComparisonController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Controller.class);
 
     private final CarService carService;
     private final ComparisonLogic comparisonLogic;
 
-    public ComparisonController(CarService carService, ComparisonLogic comparisonLogic) {
+    public Controller(CarService carService, ComparisonLogic comparisonLogic) {
         this.carService = carService;
         this.comparisonLogic = comparisonLogic;
     }
