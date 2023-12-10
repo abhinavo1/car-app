@@ -5,6 +5,6 @@ import com.intuit.request.CompareRequest;
 import com.intuit.response.ComparisonList;
 
 public interface ComparisonLogic {
-     ComparisonList compare(CompareRequest idList) throws JsonProcessingException;
+     ComparisonList compare(CompareRequest compareRequest) throws JsonProcessingException;
 
     }

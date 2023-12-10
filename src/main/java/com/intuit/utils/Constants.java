@@ -7,6 +7,7 @@ public class Constants {
     public static String NUMBER_OF_SEATS = "numberOfSeats";
     public static String TYPE = "type";
     public static String HORSE_POWER = "horsePower";
+    public static final String CAR_KEY_PREFIX = "car_key";
 
 
 

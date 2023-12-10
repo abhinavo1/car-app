@@ -2,10 +2,10 @@ package com.intuit.models;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class Seats {
+public class Seats implements Serializable {
     private int numberOfSeats;
     private String material;
-    // Other seat attributes can be added
-    // Constructors, getters, setters can be added as needed
 }

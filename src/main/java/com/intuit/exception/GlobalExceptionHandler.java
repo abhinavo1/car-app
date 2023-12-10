@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -18,6 +19,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleCustomException(ValidationException ex) {
         LOGGER.error("ValidationException occurred: {}", ex.getMessage());
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseBody
+    public ResponseEntity<String> handleMethodArgumentTypeMismatchException(NumberFormatException ex) {
+        LOGGER.error("NumberFormatException occurred: {}", ex.getMessage());
+        return new ResponseEntity<>("Wrong value entered for one of the parameters", HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({Exception.class,InterruptedException.class})

@@ -45,12 +45,12 @@ public class ComparisonController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/compare", method = RequestMethod.GET)
+    @RequestMapping(value = "/compare/car", method = RequestMethod.GET)
     public ResponseEntity<ComparisonList> selectCarsForComparison(
-            @RequestBody CompareRequest idList
+            @RequestBody CompareRequest compareRequest
     ) throws JsonProcessingException {
-        ComparisonList comparisonResponses = comparisonLogic.compare(idList);
-        LOGGER.info("Performed comparison for car IDs: {}", idList);
+        ComparisonList comparisonResponses = comparisonLogic.compare(compareRequest);
+        LOGGER.info("Performed comparison for car IDs: {}", compareRequest);
         return new ResponseEntity<>(comparisonResponses, HttpStatus.OK);
     }
 }

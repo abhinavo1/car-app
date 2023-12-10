@@ -2,10 +2,10 @@ package com.intuit.models;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class Safety {
+public class Safety implements Serializable {
     private boolean hasAirbags;
     private boolean hasABS;
-    // Other safety attributes can be added
-    // Constructors, getters, setters can be added as needed
 }

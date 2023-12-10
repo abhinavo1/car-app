@@ -61,7 +61,7 @@ public class ComparisonLogicImplTest {
         ComparisonList comparisonList = carComparisonLogic.compare(compareRequest);
 
         assertNotNull(comparisonList);
-        verify(requestValidator, times(1)).validateRequest(compareRequest);
+        verify(requestValidator, times(1)).validateCompareRequest(compareRequest);
         verify(carRepository, times(3)).findById(anyString());
         verify(specificationsComparator, times(1)).compareSpecifications(any(), any());
 
@@ -78,7 +78,7 @@ public class ComparisonLogicImplTest {
         when(carRepository.findById(anyString())).thenReturn(Optional.empty());
 
         assertThrows(ValidationException.class, () -> carComparisonLogic.compare(compareRequest));
-        verify(requestValidator, times(1)).validateRequest(compareRequest);
+        verify(requestValidator, times(1)).validateCompareRequest(compareRequest);
         verify(carRepository, times(1)).findById(anyString());
         verifyNoInteractions(comparatorUtils);
         verifyNoInteractions(specificationsComparator);
@@ -91,7 +91,7 @@ public class ComparisonLogicImplTest {
         compareRequest.setIdList(Arrays.asList("id3","id2","id4"));
 
         assertThrows(ValidationException.class, () -> carComparisonLogic.compare(compareRequest));
-        verify(requestValidator, times(1)).validateRequest(compareRequest);
+        verify(requestValidator, times(1)).validateCompareRequest(compareRequest);
         verify(carRepository, times(1)).findById(anyString());
         verifyNoInteractions(comparatorUtils);
         verifyNoInteractions(specificationsComparator);

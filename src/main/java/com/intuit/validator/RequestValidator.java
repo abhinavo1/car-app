@@ -9,12 +9,16 @@ import java.util.List;
 
 @Service
 public class RequestValidator {
-    public void validateRequest(CompareRequest idList) {
-        if(idList == null) {
+    public void validateCompareRequest(CompareRequest compareRequest) {
+        if(compareRequest == null) {
             throw new ValidationException("id list is Null");
-        } else if (idList.getIdList().size() > 2) {
+        } else if (compareRequest.getIdList().size() > 2) {
             throw new ValidationException("id List greater/lesser than required");
         }
+        else if (compareRequest.getIdList().contains(compareRequest.getViewingCarId())) {
+            throw new ValidationException("viewing car id and comparison id same ");
+        }
+
     }
 
     public void validateIfCarsExist(List<Car> cars) {
