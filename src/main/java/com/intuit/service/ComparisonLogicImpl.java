@@ -10,6 +10,7 @@ import com.intuit.validator.RequestValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,17 +35,18 @@ public class ComparisonLogicImpl implements ComparisonLogic {
 
     private final RedisService redisService;
 
-
-    private final ExecutorService executorService = Executors.newFixedThreadPool(2);
+    private final ExecutorService executorService;
 
     @Autowired
     public ComparisonLogicImpl(CarRepository carRepository, FeatureComparator featureComparator,
-                               SpecificationsComparator specificationsComparator, RequestValidator requestValidator, RedisService redisService) {
+                               SpecificationsComparator specificationsComparator, RequestValidator requestValidator, RedisService redisService,@Value("${comparator.thread.pool:1}") int threadPoolSize) {
         this.carRepository = carRepository;
         this.featureComparator = featureComparator;
         this.specificationsComparator = specificationsComparator;
         this.requestValidator = requestValidator;
         this.redisService = redisService;
+        this.executorService = Executors.newFixedThreadPool(threadPoolSize);
+
     }
 
     @Override
