@@ -1,4 +1,4 @@
-package com.intuit;
+package com.intuit.config;
 
 
 import com.intuit.models.Car;
