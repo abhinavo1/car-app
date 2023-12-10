@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -21,9 +23,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ExceptionHandler({MethodArgumentTypeMismatchException.class, MethodArgumentNotValidException.class, MissingServletRequestParameterException.class})
     @ResponseBody
-    public ResponseEntity<String> handleMethodArgumentTypeMismatchException(NumberFormatException ex) {
+    public ResponseEntity<String> handleMethodArgumentNotValidException(Exception ex) {
         LOGGER.error("NumberFormatException occurred: {}", ex.getMessage());
         return new ResponseEntity<>("Wrong value entered for one of the parameters", HttpStatus.BAD_REQUEST);
     }
