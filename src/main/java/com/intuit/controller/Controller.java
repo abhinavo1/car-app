@@ -34,14 +34,10 @@ public class Controller {
             @RequestParam String type,
             @RequestParam double price
     ) {
-        try {
-            List<CarResponse> cars = carService.getCarsByTypeAndPrice(type, price);
-            LOGGER.info("Retrieved cars by type '{}' and price '{}'", type, price);
-            return new ResponseEntity<>(cars, HttpStatus.OK);
-        } catch (Exception e) {
-            LOGGER.error("Error retrieving cars by type '{}' and price '{}'", type, price, e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        List<CarResponse> cars = carService.getCarsByTypeAndPrice(type, price);
+        LOGGER.info("Retrieved cars by type '{}' and price '{}'", type, price);
+        return new ResponseEntity<>(cars, HttpStatus.OK);
+
     }
 
     @ResponseBody

@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({MethodArgumentTypeMismatchException.class, MethodArgumentNotValidException.class, MissingServletRequestParameterException.class})
     @ResponseBody
     public ResponseEntity<String> handleMethodArgumentNotValidException(Exception ex) {
-        LOGGER.error("NumberFormatException occurred: {}", ex.getMessage());
+        LOGGER.error("Exception occurred: {}", ex.getMessage());
         return new ResponseEntity<>("Wrong value entered for one of the parameters", HttpStatus.BAD_REQUEST);
     }
 
