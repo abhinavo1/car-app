@@ -41,7 +41,7 @@ public class FeatureComparatorImpl implements FeatureComparator {
 
     private void compareAndAddFeature(String name, String value, List<Engine> engines, List<FeatureResponse> featureResponses) {
         List<String> values = engines.stream()
-                .map(engine -> name.equals(Constants.TYPE) ? engine.getType() : String.valueOf(engine.getHorsepower()))
+                .map(engine -> getValue(name,engine))
                 .collect(Collectors.toList());
 
         boolean isCommonValue = isCommonType(value, values);
@@ -52,5 +52,22 @@ public class FeatureComparatorImpl implements FeatureComparator {
                 .isCommonValue(isCommonValue)
                 .build());
     }
+
+    public String getValue(String name, Engine engine) {
+        String val = "";
+        switch (name) {
+            case Constants.TYPE:
+                val = engine.getType();
+                break;
+            case Constants.HORSE_POWER:
+                val = String.valueOf(engine.getHorsepower());
+                break;
+            default:
+                val = "not found";
+                break;
+        }
+        return val;
+    }
+
 
 }
